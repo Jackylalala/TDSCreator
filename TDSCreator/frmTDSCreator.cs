@@ -343,7 +343,9 @@ namespace TDSCreator
                     tdsFile[i].Data = ms;
                 }
                 //create streams
+                bgdWork.ReportProgress(99, "Merging file...");
                 MemoryStream msContent = MergeSinglePdfs(tdsFile);
+                bgdWork.ReportProgress(99, "Creating TOC...");
                 MemoryStream msTOC = CreateTOC();
                 List<MemoryStream> streams = new List<MemoryStream>();
                 streams.Add(msTOC);
@@ -391,7 +393,7 @@ namespace TDSCreator
                                             System.Drawing.Imaging.ImageFormat.Jpeg);
                                         logo.ScaleAbsoluteWidth(width * 0.3024f);
                                         logo.ScaleAbsoluteHeight(height * 0.0343f);
-                                        logo.SetAbsolutePosition(width * 0.0595f, height * 0.9590f);
+                                        logo.SetAbsolutePosition(width * 0.0095f, height * 0.9590f);
                                         logo.Alignment = Element.ALIGN_LEFT;
                                         PdfContentByte cb = stamper.GetOverContent();
                                         cb.AddImage(logo);
@@ -413,7 +415,7 @@ namespace TDSCreator
                                             new Phrase(
                                                 "以上內文資訊具有機密性，僅限於東聯化學有限公司內部使用。",
                                                 new Font(fontMsjh, 9)),
-                                            width * 0.9405f, height * 0.0067f + 8f,
+                                            width * 0.9905f, height * 0.0067f + 8f,
                                             0);
                                         ColumnText.ShowTextAligned(
                                             stamper.GetOverContent(),
@@ -421,7 +423,7 @@ namespace TDSCreator
                                             new Phrase(
                                                 "The above containing confidential information for OUCC internal use only.",
                                                 new Font(fontCalibri, 9)),
-                                            width * 0.9405f, height * 0.0067f,
+                                            width * 0.9905f, height * 0.0067f,
                                             0);
                                         //add page number
                                         ColumnText.ShowTextAligned(
@@ -451,6 +453,7 @@ namespace TDSCreator
                 }
                 if (toFile)
                 {
+                    bgdWork.ReportProgress(99, "Saving file...");
                     //write to file
                     using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
                     {
@@ -462,12 +465,13 @@ namespace TDSCreator
                 }
                 else
                 {
+                    bgdWork.ReportProgress(99, "Sending mail...");
                     finalStream.Position = 0; //reset
                     Attachment attach = new Attachment(finalStream, fileName);
                     attach.ContentDisposition.FileName = fileName + ".pdf";
                     MailMessage myMail = new MailMessage();
                     myMail.Subject = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                    myMail.From = new MailAddress("jackylalala9527@gmail.com", "TDS Mailer");
+                    myMail.From = new MailAddress("jackylalala.report@gmail.com", "TDS Mailer");
                     myMail.To.Add(mailAddress);
                     myMail.SubjectEncoding = Encoding.UTF8;
                     myMail.IsBodyHtml = true;
@@ -479,7 +483,7 @@ namespace TDSCreator
                         using (SmtpClient mySmtp = new SmtpClient())
                         {
                             mySmtp.Port = 587;
-                            mySmtp.Credentials = new NetworkCredential("jackylalala9527@gmail.com", "7qvt6t2738");
+                            mySmtp.Credentials = new NetworkCredential("jackylalala.report@gmail.com", "7QVT6-t2738");
                             mySmtp.Host = "smtp.gmail.com";
                             mySmtp.EnableSsl = true;
                             mySmtp.Send(myMail);
@@ -543,6 +547,8 @@ namespace TDSCreator
                         {
                             item.Data.Position = 0; //reset
                             PdfReader reader = new PdfReader(item.Data);
+                            if (!reader.IsOpenedWithFullPermissions)
+                                MessageBox.Show("Please check the permission of file " + item.SafeFileName);
                             writer.AddDocument(reader);
                             item.Page = reader.NumberOfPages;
                             //add bookmark
@@ -590,7 +596,7 @@ namespace TDSCreator
                 FindAndReplace(word, "(QA)", QAer);
                 FindAndReplace(word, "(review)", reviewer);
                 FindAndReplace(word, "(author)", author);
-                FindAndReplace(word, "yyyy年MM月dd日", date.ToString("yyyy年MM月dd日"));
+                FindAndReplace(word, "(yyyy年MM月dd日)", date.ToString("yyyy年MM月dd日"));
                 //create TOC
                 int counter = 0;
                 for (int i = 0; i < tdsFile.Count; i++)
@@ -627,107 +633,6 @@ namespace TDSCreator
                 File.Delete(tempPdf);
                 File.Delete(tempDoc);
             }
-
-            //create pdf method
-            /*
-            using (Document doc = new Document(PageSize.A4, 35.4167f, 35.4167f, 72.0094f, 72.0094f)) //595*842
-            {
-                using (PdfWriter writer = PdfWriter.GetInstance(doc, ms))
-                {
-                    writer.CloseStream = false;
-                    doc.Open();
-                    /*
-                    Stream ms2 = Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.template.pdf");
-                    PdfReader r = new PdfReader("test.pdf");
-                    PdfDictionary dict = r.GetPageN(1);
-                    PdfObject obj = dict.GetDirectObject(PdfName.CONTENTS);
-                    if (obj.GetType()==  typeof(PRStream)) {
-                        PRStream stream = (PRStream)obj;
-                        byte[] data = PdfReader.GetStreamBytes(stream);
-                        stream.SetData(Encoding.ASCII.GetBytes(Encoding.Unicode.GetString(data).Replace("356E", "1EDD")));
-                    }
-                    PdfStamper stamper = new PdfStamper(r, new FileStream("000.pdf",FileMode.Create,FileAccess.ReadWrite));
-                    stamper.Close();
-                    r.Close();
-                    --
-                    PdfContentByte cb = writer.DirectContent;
-                    //write version
-                    Paragraph p = new Paragraph();
-                    p.Alignment = Element.ALIGN_RIGHT;
-                    p.SetLeading(16f, 0);
-                    p.Add(new Phrase("版本", new Font(fontMsjh, 14)));
-                    p.Add(new Phrase("V" + version, new Font(fontCalibri, 14, iTextSharp.text.Font.UNDERLINE)));
-                    doc.Add(p);
-                    //write title and date
-                    p.Clear();
-                    p.Alignment = Element.ALIGN_CENTER;
-                    p.SetLeading(30.6f, 0);
-                    for (int i = 0; i < 6; i++)
-                        p.Add(new Phrase("\n"));
-                    p.Add(new Phrase(TDSName + "技術文件", new Font(fontMsjh, 24)));
-                    for (int i = 0; i < 10; i++)
-                        p.Add(new Phrase("\n"));
-                    p.Add(new Phrase(date.ToString("yyyy年MM月dd日"), new Font(fontMsjh, 16)));
-                    doc.Add(p);
-                    //write author
-                    PdfPTable table = new PdfPTable(4);
-                    table.TotalWidth = 318.4667f;
-                    table.SetWidths(new float[] { 1, 1, 1, 1 });
-                    table.DefaultCell.Padding = 0;
-                    table.DefaultCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                    table.DefaultCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                    table.DefaultCell.FixedHeight = 27.7832f;
-                    table.DefaultCell.SetLeading(14.24f, 0);
-                    table.AddCell(new Phrase("核准", new Font(fontMsjh, 16)));
-                    p.Clear();
-                    p.Add(new Phrase("QA", new Font(fontCalibri, 16)));
-                    p.Add(new Phrase("審查", new Font(fontMsjh, 16)));
-                    table.AddCell(p);
-                    table.AddCell(new Phrase("審查", new Font(fontMsjh, 16)));
-                    table.AddCell(new Phrase("撰寫者", new Font(fontMsjh, 16)));
-                    table.DefaultCell.FixedHeight = 85.0505f;
-                    table.AddCell(new Phrase("張英世", new Font(fontMsjh, 16)));
-                    table.AddCell(new Phrase("葉仲宜", new Font(fontMsjh, 16)));
-                    table.AddCell(new Phrase("黃俊豐\n\n王文祥\n\n蕭孟維", new Font(fontMsjh, 16)));
-                    if (author.IndexOf("\n") < 0) //single line
-                        table.DefaultCell.SetLeading(16, 0);
-                    table.AddCell(new Phrase(author, new Font(fontMsjh, 16)));
-                    table.WriteSelectedRows(0, -1, 138.2667f, 373.0882f, cb);
-                    doc.NewPage();
-                    //create TOC
-                    iTextSharp.text.pdf.draw.DottedLineSeparator separator = new iTextSharp.text.pdf.draw.DottedLineSeparator();
-                    Chunk dottedline = new Chunk(separator);
-                    p.Clear();
-                    p.Alignment = Element.ALIGN_CENTER;
-                    p.Leading = 23.86f;
-                    p.Add(new Phrase("目錄\n", new Font(fontMsjhBd, 22)));
-                    int counter = 0;
-                    foreach (TDSFile item in tdsFile)
-                    {
-                        p.Add(new Phrase(item.Name, new Font(fontMsjh, 14)));
-                        p.Add(dottedline);
-                        if (!item.FileType.Equals(string.Empty))
-                        {
-                            p.Add(new Phrase(string.Format("{0:00}", (counter + 1).ToString()), new Font(fontCalibri, 14)));
-                            counter += item.Page;
-                        }
-                        p.Add("\n");
-                    }
-                    PdfPTable tableTOC = new PdfPTable(1);
-                    PdfPCell cell = new PdfPCell(p);
-                    cell.BorderWidth = Rectangle.NO_BORDER;
-                    cell.Padding = 0;
-                    cell.HorizontalAlignment = Element.ALIGN_CENTER;
-                    cell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                    cell.SetLeading(31.998f, 0);
-                    tableTOC.TotalWidth = 415.0833f;
-                    tableTOC.HorizontalAlignment = Element.ALIGN_CENTER;
-                    tableTOC.AddCell(cell);
-                    doc.Add(tableTOC);
-                    doc.Close();
-                }
-            }
-            */
             return ms;
         }
 
@@ -778,12 +683,6 @@ namespace TDSCreator
             }
         }
 
-        private string CalcdFontHeight()
-        {
-            BaseFont bf = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
-            float a = fontCalibri.GetAscentPoint("ssd", 9) - fontCalibri.GetDescentPoint("ssd", 9);
-            return a.ToString();
-        }
         #endregion
     }
 }
