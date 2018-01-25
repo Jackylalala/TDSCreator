@@ -243,6 +243,8 @@ namespace TDSCreator
             string fileName = (e.Argument as object[])[0].ToString(); ;
             string mailAddress = (e.Argument as object[])[1].ToString(); ;
             bool toFile = bool.Parse((e.Argument as object[])[2].ToString());
+            int retry = 0;
+            Retry:
             try
             {
                 //convert files
@@ -330,6 +332,12 @@ namespace TDSCreator
                         }
                         catch (Exception ex)
                         {
+                            if (retry<1)
+                            {
+                                retry++;
+                                MessageBox.Show("Got some trouble, retring");
+                                goto Retry;
+                            }
                             MessageBox.Show(ex.StackTrace + "\n" + ex.Message);
                         }
                         finally
@@ -340,6 +348,7 @@ namespace TDSCreator
                             GC.WaitForPendingFinalizers();
                         }
                     }
+                    tdsFile[i].FileType = ".pdf";
                     tdsFile[i].Data = ms;
                 }
                 //create streams
