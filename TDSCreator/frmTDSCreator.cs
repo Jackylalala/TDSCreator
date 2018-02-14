@@ -335,7 +335,7 @@ namespace TDSCreator
                             if (retry<1)
                             {
                                 retry++;
-                                MessageBox.Show("Got some trouble, retring");
+                                bgdWork.ReportProgress(99, "Getting some trouble, retry...");
                                 goto Retry;
                             }
                             MessageBox.Show(ex.StackTrace + "\n" + ex.Message);
@@ -348,7 +348,6 @@ namespace TDSCreator
                             GC.WaitForPendingFinalizers();
                         }
                     }
-                    tdsFile[i].FileType = ".pdf";
                     tdsFile[i].Data = ms;
                 }
                 //create streams

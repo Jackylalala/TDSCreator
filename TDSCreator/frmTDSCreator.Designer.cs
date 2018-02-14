@@ -56,7 +56,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btnStart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.btnStart.Location = new System.Drawing.Point(131, 630);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(178, 31);
@@ -78,11 +78,11 @@
             // lblStatus
             // 
             this.lblStatus.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblStatus.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.lblStatus.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblStatus.ForeColor = System.Drawing.Color.White;
             this.lblStatus.Location = new System.Drawing.Point(191, 227);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(251, 61);
+            this.lblStatus.Size = new System.Drawing.Size(300, 30);
             this.lblStatus.TabIndex = 0;
             this.lblStatus.Text = "label5";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -91,7 +91,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label1.Location = new System.Drawing.Point(397, 599);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 17);
@@ -101,7 +101,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label2.Location = new System.Drawing.Point(308, 531);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 17);
@@ -110,7 +110,7 @@
             // 
             // txtVersion
             // 
-            this.txtVersion.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtVersion.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtVersion.Location = new System.Drawing.Point(361, 527);
             this.txtVersion.MaxLength = 8;
             this.txtVersion.Name = "txtVersion";
@@ -121,7 +121,7 @@
             // 
             // txtAuthor
             // 
-            this.txtAuthor.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtAuthor.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtAuthor.Location = new System.Drawing.Point(463, 595);
             this.txtAuthor.MaxLength = 12;
             this.txtAuthor.Name = "txtAuthor";
@@ -131,7 +131,7 @@
             // 
             // txtTDSName
             // 
-            this.txtTDSName.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtTDSName.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtTDSName.Location = new System.Drawing.Point(97, 527);
             this.txtTDSName.MaxLength = 20;
             this.txtTDSName.Name = "txtTDSName";
@@ -142,7 +142,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label3.Location = new System.Drawing.Point(18, 531);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 17);
@@ -152,7 +152,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label4.Location = new System.Drawing.Point(421, 531);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 17);
@@ -162,7 +162,7 @@
             // dtpDate
             // 
             this.dtpDate.CustomFormat = "yyyy年MM月dd日";
-            this.dtpDate.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.dtpDate.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpDate.Location = new System.Drawing.Point(474, 527);
             this.dtpDate.Name = "dtpDate";
@@ -172,7 +172,7 @@
             // 
             // btnStart_Mail
             // 
-            this.btnStart_Mail.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.btnStart_Mail.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.btnStart_Mail.Location = new System.Drawing.Point(324, 630);
             this.btnStart_Mail.Name = "btnStart_Mail";
             this.btnStart_Mail.Size = new System.Drawing.Size(178, 31);
@@ -191,7 +191,7 @@
             // 
             // txtApprove1
             // 
-            this.txtApprove1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtApprove1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtApprove1.Location = new System.Drawing.Point(70, 560);
             this.txtApprove1.MaxLength = 12;
             this.txtApprove1.Name = "txtApprove1";
@@ -203,7 +203,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label5.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label5.Location = new System.Drawing.Point(20, 564);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 17);
@@ -212,7 +212,7 @@
             // 
             // txtQA1
             // 
-            this.txtQA1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtQA1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtQA1.Location = new System.Drawing.Point(404, 560);
             this.txtQA1.MaxLength = 12;
             this.txtQA1.Name = "txtQA1";
@@ -224,7 +224,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label6.Location = new System.Drawing.Point(333, 564);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(67, 17);
@@ -233,7 +233,7 @@
             // 
             // txtReview1
             // 
-            this.txtReview1.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtReview1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtReview1.Location = new System.Drawing.Point(70, 595);
             this.txtReview1.MaxLength = 12;
             this.txtReview1.Name = "txtReview1";
@@ -245,7 +245,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.label7.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.label7.Location = new System.Drawing.Point(20, 599);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 17);
@@ -254,7 +254,7 @@
             // 
             // txtReview2
             // 
-            this.txtReview2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtReview2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtReview2.Location = new System.Drawing.Point(178, 595);
             this.txtReview2.MaxLength = 12;
             this.txtReview2.Name = "txtReview2";
@@ -265,7 +265,7 @@
             // 
             // txtReview3
             // 
-            this.txtReview3.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtReview3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtReview3.Location = new System.Drawing.Point(286, 595);
             this.txtReview3.MaxLength = 12;
             this.txtReview3.Name = "txtReview3";
@@ -276,7 +276,7 @@
             // 
             // txtQA2
             // 
-            this.txtQA2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtQA2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtQA2.Location = new System.Drawing.Point(512, 560);
             this.txtQA2.MaxLength = 12;
             this.txtQA2.Name = "txtQA2";
@@ -286,7 +286,7 @@
             // 
             // txtApprove2
             // 
-            this.txtApprove2.Font = new System.Drawing.Font("微軟正黑體", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtApprove2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.txtApprove2.Location = new System.Drawing.Point(178, 560);
             this.txtApprove2.MaxLength = 12;
             this.txtApprove2.Name = "txtApprove2";
