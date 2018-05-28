@@ -54,7 +54,7 @@ namespace TDSCreator
             }
             catch (Exception)
             { }
-            cboMailAddress.Focus();
+            cboMailAddress.SelectedIndex = 0;
         }
 
         private void btnOk_Click(object sender, EventArgs e)

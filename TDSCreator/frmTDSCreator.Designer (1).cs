@@ -52,16 +52,12 @@
             this.txtReview3 = new System.Windows.Forms.TextBox();
             this.txtQA2 = new System.Windows.Forms.TextBox();
             this.txtApprove2 = new System.Windows.Forms.TextBox();
-            this.btnSmartSearch = new System.Windows.Forms.Button();
-            this.bgdSmartSearch = new System.ComponentModel.BackgroundWorker();
-            this.lblBusy = new System.Windows.Forms.Label();
-            this.pnlFiles.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnStart.Location = new System.Drawing.Point(227, 652);
+            this.btnStart.Location = new System.Drawing.Point(131, 630);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(178, 31);
             this.btnStart.TabIndex = 43;
@@ -72,11 +68,10 @@
             // 
             // pnlFiles
             // 
-            this.pnlFiles.Controls.Add(this.lblBusy);
             this.pnlFiles.Location = new System.Drawing.Point(0, 1);
             this.pnlFiles.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFiles.Name = "pnlFiles";
-            this.pnlFiles.Size = new System.Drawing.Size(632, 535);
+            this.pnlFiles.Size = new System.Drawing.Size(632, 515);
             this.pnlFiles.TabIndex = 1;
             this.pnlFiles.Visible = false;
             // 
@@ -97,7 +92,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(397, 621);
+            this.label1.Location = new System.Drawing.Point(397, 599);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 17);
             this.label1.TabIndex = 2;
@@ -107,7 +102,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(308, 553);
+            this.label2.Location = new System.Drawing.Point(308, 531);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 17);
             this.label2.TabIndex = 3;
@@ -116,7 +111,7 @@
             // txtVersion
             // 
             this.txtVersion.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtVersion.Location = new System.Drawing.Point(361, 549);
+            this.txtVersion.Location = new System.Drawing.Point(361, 527);
             this.txtVersion.MaxLength = 8;
             this.txtVersion.Name = "txtVersion";
             this.txtVersion.Size = new System.Drawing.Size(42, 25);
@@ -127,18 +122,17 @@
             // txtAuthor
             // 
             this.txtAuthor.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtAuthor.Location = new System.Drawing.Point(463, 617);
+            this.txtAuthor.Location = new System.Drawing.Point(463, 595);
             this.txtAuthor.MaxLength = 12;
-            this.txtAuthor.Multiline = true;
             this.txtAuthor.Name = "txtAuthor";
-            this.txtAuthor.Size = new System.Drawing.Size(102, 22);
+            this.txtAuthor.Size = new System.Drawing.Size(102, 25);
             this.txtAuthor.TabIndex = 42;
             this.txtAuthor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // txtTDSName
             // 
             this.txtTDSName.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtTDSName.Location = new System.Drawing.Point(97, 549);
+            this.txtTDSName.Location = new System.Drawing.Point(97, 527);
             this.txtTDSName.MaxLength = 20;
             this.txtTDSName.Name = "txtTDSName";
             this.txtTDSName.Size = new System.Drawing.Size(208, 25);
@@ -149,7 +143,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(18, 553);
+            this.label3.Location = new System.Drawing.Point(18, 531);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 17);
             this.label3.TabIndex = 31;
@@ -159,7 +153,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(421, 553);
+            this.label4.Location = new System.Drawing.Point(421, 531);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 17);
             this.label4.TabIndex = 34;
@@ -170,7 +164,7 @@
             this.dtpDate.CustomFormat = "yyyy年MM月dd日";
             this.dtpDate.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpDate.Location = new System.Drawing.Point(474, 549);
+            this.dtpDate.Location = new System.Drawing.Point(474, 527);
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(140, 25);
             this.dtpDate.TabIndex = 34;
@@ -179,7 +173,7 @@
             // btnStart_Mail
             // 
             this.btnStart_Mail.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnStart_Mail.Location = new System.Drawing.Point(433, 652);
+            this.btnStart_Mail.Location = new System.Drawing.Point(324, 630);
             this.btnStart_Mail.Name = "btnStart_Mail";
             this.btnStart_Mail.Size = new System.Drawing.Size(178, 31);
             this.btnStart_Mail.TabIndex = 44;
@@ -198,7 +192,7 @@
             // txtApprove1
             // 
             this.txtApprove1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtApprove1.Location = new System.Drawing.Point(70, 582);
+            this.txtApprove1.Location = new System.Drawing.Point(70, 560);
             this.txtApprove1.MaxLength = 12;
             this.txtApprove1.Name = "txtApprove1";
             this.txtApprove1.Size = new System.Drawing.Size(102, 25);
@@ -210,7 +204,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(20, 586);
+            this.label5.Location = new System.Drawing.Point(20, 564);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 17);
             this.label5.TabIndex = 38;
@@ -219,7 +213,7 @@
             // txtQA1
             // 
             this.txtQA1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtQA1.Location = new System.Drawing.Point(404, 582);
+            this.txtQA1.Location = new System.Drawing.Point(404, 560);
             this.txtQA1.MaxLength = 12;
             this.txtQA1.Name = "txtQA1";
             this.txtQA1.Size = new System.Drawing.Size(102, 25);
@@ -231,7 +225,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(333, 586);
+            this.label6.Location = new System.Drawing.Point(333, 564);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(67, 17);
             this.label6.TabIndex = 40;
@@ -240,7 +234,7 @@
             // txtReview1
             // 
             this.txtReview1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview1.Location = new System.Drawing.Point(70, 617);
+            this.txtReview1.Location = new System.Drawing.Point(70, 595);
             this.txtReview1.MaxLength = 12;
             this.txtReview1.Name = "txtReview1";
             this.txtReview1.Size = new System.Drawing.Size(102, 25);
@@ -252,7 +246,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(20, 621);
+            this.label7.Location = new System.Drawing.Point(20, 599);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 17);
             this.label7.TabIndex = 42;
@@ -261,7 +255,7 @@
             // txtReview2
             // 
             this.txtReview2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview2.Location = new System.Drawing.Point(178, 617);
+            this.txtReview2.Location = new System.Drawing.Point(178, 595);
             this.txtReview2.MaxLength = 12;
             this.txtReview2.Name = "txtReview2";
             this.txtReview2.Size = new System.Drawing.Size(102, 25);
@@ -272,7 +266,7 @@
             // txtReview3
             // 
             this.txtReview3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview3.Location = new System.Drawing.Point(286, 617);
+            this.txtReview3.Location = new System.Drawing.Point(286, 595);
             this.txtReview3.MaxLength = 12;
             this.txtReview3.Name = "txtReview3";
             this.txtReview3.Size = new System.Drawing.Size(102, 25);
@@ -283,7 +277,7 @@
             // txtQA2
             // 
             this.txtQA2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtQA2.Location = new System.Drawing.Point(512, 582);
+            this.txtQA2.Location = new System.Drawing.Point(512, 560);
             this.txtQA2.MaxLength = 12;
             this.txtQA2.Name = "txtQA2";
             this.txtQA2.Size = new System.Drawing.Size(102, 25);
@@ -293,51 +287,18 @@
             // txtApprove2
             // 
             this.txtApprove2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtApprove2.Location = new System.Drawing.Point(178, 582);
+            this.txtApprove2.Location = new System.Drawing.Point(178, 560);
             this.txtApprove2.MaxLength = 12;
             this.txtApprove2.Name = "txtApprove2";
             this.txtApprove2.Size = new System.Drawing.Size(102, 25);
             this.txtApprove2.TabIndex = 36;
             this.txtApprove2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // btnSmartSearch
-            // 
-            this.btnSmartSearch.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnSmartSearch.Location = new System.Drawing.Point(21, 652);
-            this.btnSmartSearch.Name = "btnSmartSearch";
-            this.btnSmartSearch.Size = new System.Drawing.Size(178, 31);
-            this.btnSmartSearch.TabIndex = 45;
-            this.btnSmartSearch.Text = "Smart Search";
-            this.btnSmartSearch.UseVisualStyleBackColor = true;
-            this.btnSmartSearch.Click += new System.EventHandler(this.btnSmartSearch_Click);
-            // 
-            // bgdSmartSearch
-            // 
-            this.bgdSmartSearch.WorkerReportsProgress = true;
-            this.bgdSmartSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgdSmartSearch_DoWork);
-            this.bgdSmartSearch.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgdSmartSearch_ProgressChanged);
-            this.bgdSmartSearch.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgdSmartSearch_RunWorkerCompleted);
-            // 
-            // lblBusy
-            // 
-            this.lblBusy.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.lblBusy.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblBusy.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBusy.ForeColor = System.Drawing.SystemColors.Control;
-            this.lblBusy.Location = new System.Drawing.Point(207, 232);
-            this.lblBusy.Name = "lblBusy";
-            this.lblBusy.Size = new System.Drawing.Size(218, 70);
-            this.lblBusy.TabIndex = 0;
-            this.lblBusy.Text = "Searching...";
-            this.lblBusy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblBusy.Visible = false;
-            // 
             // frmTDSCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(632, 700);
-            this.Controls.Add(this.btnSmartSearch);
+            this.ClientSize = new System.Drawing.Size(632, 669);
             this.Controls.Add(this.txtApprove2);
             this.Controls.Add(this.txtQA2);
             this.Controls.Add(this.txtReview3);
@@ -365,7 +326,6 @@
             this.MaximizeBox = false;
             this.Name = "frmTDSCreator";
             this.Text = "TDS Creator";
-            this.pnlFiles.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -396,9 +356,6 @@
         private System.Windows.Forms.TextBox txtReview3;
         private System.Windows.Forms.TextBox txtQA2;
         private System.Windows.Forms.TextBox txtApprove2;
-        private System.Windows.Forms.Button btnSmartSearch;
-        private System.ComponentModel.BackgroundWorker bgdSmartSearch;
-        private System.Windows.Forms.Label lblBusy;
     }
 }
 
