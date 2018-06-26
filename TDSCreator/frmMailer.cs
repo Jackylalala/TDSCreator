@@ -30,7 +30,7 @@ namespace TDSCreator
         }
         #endregion
 
-        public frmMailer()
+        public frmMailer(string filename)
         {
             InitializeComponent();
             //read mail list
@@ -55,6 +55,8 @@ namespace TDSCreator
             catch (Exception)
             { }
             cboMailAddress.SelectedIndex = 0;
+            //initiate
+            txtFileName.Text = filename;
         }
 
         private void btnOk_Click(object sender, EventArgs e)

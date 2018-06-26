@@ -11,6 +11,7 @@ using System.Net;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace TDSCreator
 {
@@ -33,7 +34,7 @@ namespace TDSCreator
         private Label[] lblCount = new Label[17];
         private Button[] btnClearFile = new Button[17];
         private Button[] btnAddFile = new Button[17];
-        private static string[] TDS_ITEM_LIST = new string[] { "版序修訂紀錄", "產品開發流程", "原料物性暨品質分析資料", "原料安全資料表", "原料品質標準表", "產品物性資料", "產品安全資料表", "產品品質標準表", "產品應用暨市場需求分析", "競品與開發產品分析比較", "產品配方表", "製程參數", "製程暨Mass Balance流程圖", "最適批次操作結果", "配方暨製程最適化相關研究資料", "中間品管取樣分析表", "附件" };
+        private static string[] TDS_ITEM_LIST = new string[] { "版序修訂紀錄", "產品開發流程", "原料物性暨品質分析資料", "原料安全資料表", "原料品質標準表", "產品物性資料", "產品安全資料表", "產品品質標準表", "產品應用暨市場需求分析", "競品與開發產品分析比較", "產品配方表", "製程參數", "製程暨Mass Balance流程圖", "最適批次操作結果", "配方暨製程最適化相關研究資料", "中間品管取樣分析表", "附件" };
         private static List<TdsItem> tdsFile = new List<TdsItem>();
         private static bool validFile;
         private List<TdsItem> dragDropFiles = new List<TdsItem>();
@@ -198,15 +199,36 @@ namespace TDSCreator
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            string fileName = "";
-            string mailAddress = "";
+            if (txtTDSName.Text.Equals(string.Empty))
+            {
+                MessageBox.Show("請輸入產品名稱", "Alert");
+                return;
+            }
+            if (txtVersion.Text.Equals(string.Empty))
+            {
+                MessageBox.Show("請輸入版本號", "Alert");
+                return;
+            }
+            //version, author, TDSName, date
+            approver = txtApprove1.Text + (txtApprove2.Text.Equals("") ? "" : "\v" + txtApprove2.Text);
+            QAer = txtQA1.Text + (txtQA2.Text.Equals("") ? "" : "\v" + txtQA2.Text);
+            reviewer = txtReview1.Text + (txtReview2.Text.Equals("") ? "" : "\v" + txtReview2.Text) + (txtReview3.Text.Equals("") ? "" : "\v" + txtReview3.Text);
+            author = txtAuthor.Text.Replace("\r\n", "\v");
+            TdsName = txtTDSName.Text;
+            int.TryParse(txtVersion.Text, out version);
+            date = dtpDate.Value;
+            string fileName = TdsName + "技術文件_v" + version.ToString();
+            string address = "";
             int outputType;
             if (((Button)sender).Tag.ToString().Equals("file")) //to file
             {
                 if (ModifierKeys == Keys.Alt)
                 {
                     outputType = 2;
-                    if (InputBox("Save to FTP", "File Name:", ref fileName) != DialogResult.OK)
+                    address = @"ftp://jackylalala.ddns.net";
+                    if (InputBox("Save to FTP", "FTP address:", ref address) != DialogResult.OK)
+                        return;
+                    if (InputBox("Save to FTP", "File name:", ref fileName) != DialogResult.OK)
                         return;
                 }
                 else
@@ -214,6 +236,7 @@ namespace TDSCreator
                     SaveFileDialog sfd = new SaveFileDialog();
                     sfd.Title = "Save as file";
                     sfd.Filter = "PDF file(*.pdf)|*.pdf";
+                    sfd.FileName = fileName;
                     if (sfd.ShowDialog() == DialogResult.OK)
                     {
                         outputType = 0;
@@ -225,39 +248,26 @@ namespace TDSCreator
             }
             else //via mail
             {
-                frmMailer frmMailer = new frmMailer();
+                frmMailer frmMailer = new frmMailer(fileName);
                 if (frmMailer.ShowDialog() == DialogResult.OK)
                 {
                     outputType = 1;
                     fileName = frmMailer.FileName;
-                    mailAddress = frmMailer.MailAddress;
+                    address = frmMailer.MailAddress;
                 }
                 else
                     return;
             }
-            //version, author, TDSName, date
-            int.TryParse(txtVersion.Text, out version);
-            approver = txtApprove1.Text + (txtApprove2.Text.Equals("") ? "" : "\v" + txtApprove2.Text);
-            QAer = txtQA1.Text + (txtQA2.Text.Equals("") ? "" : "\v" + txtQA2.Text);
-            reviewer = txtReview1.Text + (txtReview2.Text.Equals("") ? "" : "\v" + txtReview2.Text) + (txtReview3.Text.Equals("") ? "" : "\v" + txtReview3.Text);
-            author = txtAuthor.Text.Replace("\r\n", "\v");
-            if (txtTDSName.Text.Equals(string.Empty))
-            {
-                MessageBox.Show("Please input TDS name.");
-                return;
-            }
-            TdsName = txtTDSName.Text;
-            date = dtpDate.Value;
             //sort
             tdsFile.Sort();
-            bgdWork.RunWorkerAsync(new object[] { fileName, mailAddress, outputType });
+            bgdWork.RunWorkerAsync(new object[] { fileName, address, outputType });
         }
 
         private void bgdWork_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             bgdWork.ReportProgress(0, ""); //initiate
             string fileName = (e.Argument as object[])[0].ToString(); ;
-            string mailAddress = (e.Argument as object[])[1].ToString(); ;
+            string address = (e.Argument as object[])[1].ToString(); ;
             int outputType = int.Parse((e.Argument as object[])[2].ToString());
             int retry = 0;
             Retry:
@@ -266,7 +276,7 @@ namespace TDSCreator
                 //convert files
                 for (int i = 0; i < tdsFile.Count; i++)
                 {
-                    bgdWork.ReportProgress(99, "Handling file " + TDS_ITEM_LIST[tdsFile[i].TdsIndex] + "...");
+                    bgdWork.ReportProgress(99, "正在處理檔案[" + TDS_ITEM_LIST[tdsFile[i].TdsIndex] + "]...");
                     MemoryStream ms = new MemoryStream();
                     if (File.Exists(tdsFile[i].FileName))
                     {
@@ -370,9 +380,9 @@ namespace TDSCreator
                         tdsFile.RemoveAt(i);
                 }
                 //create streams
-                bgdWork.ReportProgress(99, "Merging file...");
+                bgdWork.ReportProgress(99, "正在合併檔案...");
                 MemoryStream msContent = MergeSinglePdfs(tdsFile);
-                bgdWork.ReportProgress(99, "Creating TOC...");
+                bgdWork.ReportProgress(99, "產生文件目錄...");
                 MemoryStream msTOC = CreateTOC();
                 List<MemoryStream> streams = new List<MemoryStream>();
                 streams.Add(msTOC);
@@ -486,8 +496,9 @@ namespace TDSCreator
                             byte[] bytes; //byte array for combined stream
                             bytes = finalStream.ToArray();
                             fs.Write(bytes, 0, bytes.Length);
-                            MessageBox.Show("Save to file success");
                         }
+                        Process.Start(fileName);
+                        MessageBox.Show("儲存檔案成功。\n若此程式於沙盒模式(程式周圍有綠色方框)執行，離開程式將會無法看見此檔案，請使用Acrobat Reader中的傳送功能以電子郵件寄出", "Alear");
                         break;
                     case 1: //send mail
                         bgdWork.ReportProgress(99, "Sending mail...");
@@ -497,7 +508,7 @@ namespace TDSCreator
                         MailMessage myMail = new MailMessage();
                         myMail.Subject = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                         myMail.From = new MailAddress("jackylalala.report@gmail.com", "TDS Mailer");
-                        myMail.To.Add(mailAddress);
+                        myMail.To.Add(address);
                         myMail.SubjectEncoding = Encoding.UTF8;
                         myMail.IsBodyHtml = true;
                         myMail.BodyEncoding = Encoding.UTF8;
@@ -524,7 +535,7 @@ namespace TDSCreator
                         bgdWork.ReportProgress(99, "Saving file...");
                         WebClient wc = new WebClient();
                         wc.Credentials = new NetworkCredential();
-                        wc.UploadData("ftp://jackylalala.ddns.net/" + TdsName + ".pdf", finalStream.ToArray());
+                        wc.UploadData(address + "/" + fileName + ".pdf", finalStream.ToArray());
                         break;
                 }
             }
@@ -556,6 +567,74 @@ namespace TDSCreator
             btnStart_Mail.Enabled = true;
             pnlFiles.Visible = true;
             lblStatus.Visible = false;
+        }
+
+        private void btnSmartSearch_Click(object sender, EventArgs e)
+        {
+            if (txtTDSName.Text.Equals(string.Empty))
+                MessageBox.Show("請輸入產品名稱");
+            else
+            {
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    pnlFiles.Enabled = false;
+                    lblBusy.Visible = true;
+                    btnSmartSearch.Enabled = false;
+                    btnStart.Enabled = false;
+                    btnStart_Mail.Enabled = false;
+                    bgdSmartSearch.RunWorkerAsync(new object[] { txtTDSName.Text, fbd.SelectedPath });
+                }
+            }
+        }
+
+        private void bgdSmartSearch_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
+        {
+            string TDSName = (e.Argument as object[])[0].ToString();
+            string rootFolder = (e.Argument as object[])[1].ToString();
+            List<TdsItem> result = new List<TdsItem>();
+            string[] subFolder = Directory.GetDirectories(rootFolder);
+            for (int i = 0; i < TDS_ITEM_LIST.Length; i++)
+            {
+                foreach (string folder in subFolder)
+                {
+                    if (folder.Contains(TDS_ITEM_LIST[i]))
+                    {
+                        Parallel.ForEach(Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories), file =>
+                        {
+                            if (file.Contains(TDSName))
+                            {
+                                TdsItem temp = new TdsItem(i, file);
+                                if (!tdsFile.Any(temp.Equals))
+                                    result.Add(temp);
+                            }
+                        });
+                        break;
+                    }
+                }
+            }
+            bgdSmartSearch.ReportProgress(99, result);
+        }
+
+        private void bgdSmartSearch_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        {
+            List<TdsItem> result = (List<TdsItem>)e.UserState;
+            foreach (TdsItem item in result)
+            {
+                tdsFile.Add(item);
+                lstFileName[item.TdsIndex].Items.Add(item);
+                lblCount[item.TdsIndex].Text = lstFileName[item.TdsIndex].Items.Count.ToString();
+            }
+        }
+
+        private void bgdSmartSearch_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        {
+            pnlFiles.Enabled = true;
+            lblBusy.Visible = false;
+            btnSmartSearch.Enabled = true;
+            btnStart.Enabled = true;
+            btnStart_Mail.Enabled = true;
+            MessageBox.Show("智能搜尋完成！");
         }
         #endregion
 
@@ -792,72 +871,5 @@ namespace TDSCreator
 
         #endregion
 
-        private void btnSmartSearch_Click(object sender, EventArgs e)
-        {
-            if (txtTDSName.Text.Equals(string.Empty))
-                MessageBox.Show("Please input TDS name.");
-            else
-            {
-                FolderBrowserDialog fbd = new FolderBrowserDialog();
-                if (fbd.ShowDialog() == DialogResult.OK)
-                {
-                    pnlFiles.Enabled = false;
-                    lblBusy.Visible = true;
-                    btnSmartSearch.Enabled = false;
-                    btnStart.Enabled = false;
-                    btnStart_Mail.Enabled = false;
-                    bgdSmartSearch.RunWorkerAsync(new object[] { txtTDSName.Text, fbd.SelectedPath });
-                }
-            }
-        }
-
-        private void bgdSmartSearch_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            string TDSName = (e.Argument as object[])[0].ToString();
-            string rootFolder = (e.Argument as object[])[1].ToString();
-            List<TdsItem> result = new List<TdsItem>();
-            string[] subFolder = Directory.GetDirectories(rootFolder);
-            for (int i = 0; i < TDS_ITEM_LIST.Length; i++)
-            {
-                foreach(string folder in subFolder)
-                {
-                    if (folder.Contains(TDS_ITEM_LIST[i]))
-                    {
-                        Parallel.ForEach(Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories), file =>
-                        {
-                            if (file.Contains(TDSName))
-                            {
-                                TdsItem temp = new TdsItem(i, file);
-                                if (!tdsFile.Any(temp.Equals))
-                                    result.Add(temp);
-                            }
-                        });
-                        break;
-                    }
-                }
-            }
-            bgdSmartSearch.ReportProgress(99, result);
-            MessageBox.Show("Smart search complete!");
-        }
-
-        private void bgdSmartSearch_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        {
-            List<TdsItem> result = (List<TdsItem>)e.UserState;
-            foreach(TdsItem item in result)
-            {
-                tdsFile.Add(item);
-                lstFileName[item.TdsIndex].Items.Add(item);
-                lblCount[item.TdsIndex].Text = lstFileName[item.TdsIndex].Items.Count.ToString();
-            }
-        }
-
-        private void bgdSmartSearch_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
-            pnlFiles.Enabled = true;
-            lblBusy.Visible = false;
-            btnSmartSearch.Enabled = true;
-            btnStart.Enabled = true;
-            btnStart_Mail.Enabled = true;
-        }
     }
 }

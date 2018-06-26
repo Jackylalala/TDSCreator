@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTDSCreator));
             this.btnStart = new System.Windows.Forms.Button();
             this.pnlFiles = new System.Windows.Forms.Panel();
+            this.lblBusy = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -54,8 +55,11 @@
             this.txtApprove2 = new System.Windows.Forms.TextBox();
             this.btnSmartSearch = new System.Windows.Forms.Button();
             this.bgdSmartSearch = new System.ComponentModel.BackgroundWorker();
-            this.lblBusy = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlFiles.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
@@ -66,7 +70,7 @@
             this.btnStart.Size = new System.Drawing.Size(178, 31);
             this.btnStart.TabIndex = 43;
             this.btnStart.Tag = "file";
-            this.btnStart.Text = "Start(save as file)";
+            this.btnStart.Text = "儲存為檔案";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -79,6 +83,20 @@
             this.pnlFiles.Size = new System.Drawing.Size(632, 535);
             this.pnlFiles.TabIndex = 1;
             this.pnlFiles.Visible = false;
+            // 
+            // lblBusy
+            // 
+            this.lblBusy.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.lblBusy.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblBusy.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblBusy.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblBusy.Location = new System.Drawing.Point(207, 232);
+            this.lblBusy.Name = "lblBusy";
+            this.lblBusy.Size = new System.Drawing.Size(218, 70);
+            this.lblBusy.TabIndex = 0;
+            this.lblBusy.Text = "Searching...";
+            this.lblBusy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblBusy.Visible = false;
             // 
             // lblStatus
             // 
@@ -184,7 +202,7 @@
             this.btnStart_Mail.Size = new System.Drawing.Size(178, 31);
             this.btnStart_Mail.TabIndex = 44;
             this.btnStart_Mail.Tag = "mail";
-            this.btnStart_Mail.Text = "Start(send via mail)";
+            this.btnStart_Mail.Text = "以Mail寄送";
             this.btnStart_Mail.UseVisualStyleBackColor = true;
             this.btnStart_Mail.Click += new System.EventHandler(this.btnStart_Click);
             // 
@@ -307,7 +325,7 @@
             this.btnSmartSearch.Name = "btnSmartSearch";
             this.btnSmartSearch.Size = new System.Drawing.Size(178, 31);
             this.btnSmartSearch.TabIndex = 45;
-            this.btnSmartSearch.Text = "Smart Search";
+            this.btnSmartSearch.Text = "附件智能搜尋";
             this.btnSmartSearch.UseVisualStyleBackColor = true;
             this.btnSmartSearch.Click += new System.EventHandler(this.btnSmartSearch_Click);
             // 
@@ -318,25 +336,37 @@
             this.bgdSmartSearch.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgdSmartSearch_ProgressChanged);
             this.bgdSmartSearch.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgdSmartSearch_RunWorkerCompleted);
             // 
-            // lblBusy
+            // statusStrip1
             // 
-            this.lblBusy.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.lblBusy.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblBusy.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBusy.ForeColor = System.Drawing.SystemColors.Control;
-            this.lblBusy.Location = new System.Drawing.Point(207, 232);
-            this.lblBusy.Name = "lblBusy";
-            this.lblBusy.Size = new System.Drawing.Size(218, 70);
-            this.lblBusy.TabIndex = 0;
-            this.lblBusy.Text = "Searching...";
-            this.lblBusy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblBusy.Visible = false;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel2,
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 689);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(632, 22);
+            this.statusStrip1.SizingGrip = false;
+            this.statusStrip1.Stretch = false;
+            this.statusStrip1.TabIndex = 46;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(237, 17);
+            this.toolStripStatusLabel1.Text = "Mon-Wei Hsiao Copyright ©  2017-2018";
+            // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(349, 17);
+            this.toolStripStatusLabel2.Spring = true;
             // 
             // frmTDSCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(632, 700);
+            this.ClientSize = new System.Drawing.Size(632, 711);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.btnSmartSearch);
             this.Controls.Add(this.txtApprove2);
             this.Controls.Add(this.txtQA2);
@@ -364,8 +394,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmTDSCreator";
-            this.Text = "TDS Creator";
+            this.Text = "技術文件產生器";
             this.pnlFiles.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -399,6 +431,9 @@
         private System.Windows.Forms.Button btnSmartSearch;
         private System.ComponentModel.BackgroundWorker bgdSmartSearch;
         private System.Windows.Forms.Label lblBusy;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 
