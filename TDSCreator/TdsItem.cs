@@ -35,7 +35,10 @@ namespace TDSCreator
 
         public int CompareTo(TdsItem other)
         {
-            return TdsIndex.CompareTo(other.TdsIndex);
+            if (TdsIndex.CompareTo(other.TdsIndex) != 0)
+                return TdsIndex.CompareTo(other.TdsIndex);
+            else
+                return FileName.CompareTo(other.FileName);
         }
 
         public override bool Equals(object obj)
@@ -51,7 +54,12 @@ namespace TDSCreator
 
         public override int GetHashCode()
         {
-            return FileName.GetHashCode() * TdsIndex;
+            int result = 37;
+            result *= 397;
+            result += TdsIndex;
+            result *= 397;
+            result += FileName.GetHashCode();
+            return result;
         }
 
         public override string ToString()

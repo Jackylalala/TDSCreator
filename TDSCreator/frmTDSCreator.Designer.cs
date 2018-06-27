@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmTDSCreator));
             this.btnStart = new System.Windows.Forms.Button();
             this.pnlFiles = new System.Windows.Forms.Panel();
-            this.lblBusy = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -41,7 +40,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.dtpDate = new System.Windows.Forms.DateTimePicker();
-            this.btnStart_Mail = new System.Windows.Forms.Button();
             this.bgdWork = new System.ComponentModel.BackgroundWorker();
             this.txtApprove1 = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
@@ -56,54 +54,43 @@
             this.btnSmartSearch = new System.Windows.Forms.Button();
             this.bgdSmartSearch = new System.ComponentModel.BackgroundWorker();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pnlFiles.SuspendLayout();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.chkMail = new System.Windows.Forms.CheckBox();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mnuManual = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnStart.Location = new System.Drawing.Point(227, 652);
+            this.btnStart.Location = new System.Drawing.Point(293, 677);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(178, 31);
             this.btnStart.TabIndex = 43;
-            this.btnStart.Tag = "file";
-            this.btnStart.Text = "儲存為檔案";
+            this.btnStart.Tag = "";
+            this.btnStart.Text = "產生技術文件";
             this.btnStart.UseVisualStyleBackColor = true;
             this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // pnlFiles
             // 
-            this.pnlFiles.Controls.Add(this.lblBusy);
-            this.pnlFiles.Location = new System.Drawing.Point(0, 1);
+            this.pnlFiles.Location = new System.Drawing.Point(0, 27);
             this.pnlFiles.Margin = new System.Windows.Forms.Padding(0);
             this.pnlFiles.Name = "pnlFiles";
-            this.pnlFiles.Size = new System.Drawing.Size(632, 535);
+            this.pnlFiles.Size = new System.Drawing.Size(632, 533);
             this.pnlFiles.TabIndex = 1;
             this.pnlFiles.Visible = false;
-            // 
-            // lblBusy
-            // 
-            this.lblBusy.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.lblBusy.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblBusy.Font = new System.Drawing.Font("Calibri", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblBusy.ForeColor = System.Drawing.SystemColors.Control;
-            this.lblBusy.Location = new System.Drawing.Point(207, 232);
-            this.lblBusy.Name = "lblBusy";
-            this.lblBusy.Size = new System.Drawing.Size(218, 70);
-            this.lblBusy.TabIndex = 0;
-            this.lblBusy.Text = "Searching...";
-            this.lblBusy.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblBusy.Visible = false;
             // 
             // lblStatus
             // 
             this.lblStatus.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.lblStatus.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.lblStatus.ForeColor = System.Drawing.Color.White;
-            this.lblStatus.Location = new System.Drawing.Point(191, 227);
+            this.lblStatus.Location = new System.Drawing.Point(166, 254);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(300, 30);
             this.lblStatus.TabIndex = 0;
@@ -115,7 +102,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(397, 621);
+            this.label1.Location = new System.Drawing.Point(397, 646);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 17);
             this.label1.TabIndex = 2;
@@ -125,7 +112,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label2.Location = new System.Drawing.Point(308, 553);
+            this.label2.Location = new System.Drawing.Point(308, 578);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 17);
             this.label2.TabIndex = 3;
@@ -134,7 +121,7 @@
             // txtVersion
             // 
             this.txtVersion.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtVersion.Location = new System.Drawing.Point(361, 549);
+            this.txtVersion.Location = new System.Drawing.Point(361, 574);
             this.txtVersion.MaxLength = 8;
             this.txtVersion.Name = "txtVersion";
             this.txtVersion.Size = new System.Drawing.Size(42, 25);
@@ -145,7 +132,7 @@
             // txtAuthor
             // 
             this.txtAuthor.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtAuthor.Location = new System.Drawing.Point(463, 617);
+            this.txtAuthor.Location = new System.Drawing.Point(463, 642);
             this.txtAuthor.MaxLength = 12;
             this.txtAuthor.Multiline = true;
             this.txtAuthor.Name = "txtAuthor";
@@ -156,7 +143,7 @@
             // txtTDSName
             // 
             this.txtTDSName.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtTDSName.Location = new System.Drawing.Point(97, 549);
+            this.txtTDSName.Location = new System.Drawing.Point(97, 574);
             this.txtTDSName.MaxLength = 20;
             this.txtTDSName.Name = "txtTDSName";
             this.txtTDSName.Size = new System.Drawing.Size(208, 25);
@@ -167,7 +154,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label3.Location = new System.Drawing.Point(18, 553);
+            this.label3.Location = new System.Drawing.Point(18, 578);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 17);
             this.label3.TabIndex = 31;
@@ -177,7 +164,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label4.Location = new System.Drawing.Point(421, 553);
+            this.label4.Location = new System.Drawing.Point(421, 578);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(47, 17);
             this.label4.TabIndex = 34;
@@ -188,23 +175,11 @@
             this.dtpDate.CustomFormat = "yyyy年MM月dd日";
             this.dtpDate.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.dtpDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpDate.Location = new System.Drawing.Point(474, 549);
+            this.dtpDate.Location = new System.Drawing.Point(474, 574);
             this.dtpDate.Name = "dtpDate";
             this.dtpDate.Size = new System.Drawing.Size(140, 25);
             this.dtpDate.TabIndex = 34;
             this.dtpDate.Value = new System.DateTime(2018, 1, 3, 15, 4, 45, 0);
-            // 
-            // btnStart_Mail
-            // 
-            this.btnStart_Mail.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnStart_Mail.Location = new System.Drawing.Point(433, 652);
-            this.btnStart_Mail.Name = "btnStart_Mail";
-            this.btnStart_Mail.Size = new System.Drawing.Size(178, 31);
-            this.btnStart_Mail.TabIndex = 44;
-            this.btnStart_Mail.Tag = "mail";
-            this.btnStart_Mail.Text = "以Mail寄送";
-            this.btnStart_Mail.UseVisualStyleBackColor = true;
-            this.btnStart_Mail.Click += new System.EventHandler(this.btnStart_Click);
             // 
             // bgdWork
             // 
@@ -216,7 +191,7 @@
             // txtApprove1
             // 
             this.txtApprove1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtApprove1.Location = new System.Drawing.Point(70, 582);
+            this.txtApprove1.Location = new System.Drawing.Point(70, 607);
             this.txtApprove1.MaxLength = 12;
             this.txtApprove1.Name = "txtApprove1";
             this.txtApprove1.Size = new System.Drawing.Size(102, 25);
@@ -228,7 +203,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label5.Location = new System.Drawing.Point(20, 586);
+            this.label5.Location = new System.Drawing.Point(20, 611);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(47, 17);
             this.label5.TabIndex = 38;
@@ -237,7 +212,7 @@
             // txtQA1
             // 
             this.txtQA1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtQA1.Location = new System.Drawing.Point(404, 582);
+            this.txtQA1.Location = new System.Drawing.Point(404, 607);
             this.txtQA1.MaxLength = 12;
             this.txtQA1.Name = "txtQA1";
             this.txtQA1.Size = new System.Drawing.Size(102, 25);
@@ -249,7 +224,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label6.Location = new System.Drawing.Point(333, 586);
+            this.label6.Location = new System.Drawing.Point(333, 611);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(67, 17);
             this.label6.TabIndex = 40;
@@ -258,7 +233,7 @@
             // txtReview1
             // 
             this.txtReview1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview1.Location = new System.Drawing.Point(70, 617);
+            this.txtReview1.Location = new System.Drawing.Point(70, 642);
             this.txtReview1.MaxLength = 12;
             this.txtReview1.Name = "txtReview1";
             this.txtReview1.Size = new System.Drawing.Size(102, 25);
@@ -270,7 +245,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label7.Location = new System.Drawing.Point(20, 621);
+            this.label7.Location = new System.Drawing.Point(20, 646);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 17);
             this.label7.TabIndex = 42;
@@ -279,7 +254,7 @@
             // txtReview2
             // 
             this.txtReview2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview2.Location = new System.Drawing.Point(178, 617);
+            this.txtReview2.Location = new System.Drawing.Point(178, 642);
             this.txtReview2.MaxLength = 12;
             this.txtReview2.Name = "txtReview2";
             this.txtReview2.Size = new System.Drawing.Size(102, 25);
@@ -290,7 +265,7 @@
             // txtReview3
             // 
             this.txtReview3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview3.Location = new System.Drawing.Point(286, 617);
+            this.txtReview3.Location = new System.Drawing.Point(286, 642);
             this.txtReview3.MaxLength = 12;
             this.txtReview3.Name = "txtReview3";
             this.txtReview3.Size = new System.Drawing.Size(102, 25);
@@ -301,7 +276,7 @@
             // txtQA2
             // 
             this.txtQA2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtQA2.Location = new System.Drawing.Point(512, 582);
+            this.txtQA2.Location = new System.Drawing.Point(512, 607);
             this.txtQA2.MaxLength = 12;
             this.txtQA2.Name = "txtQA2";
             this.txtQA2.Size = new System.Drawing.Size(102, 25);
@@ -311,7 +286,7 @@
             // txtApprove2
             // 
             this.txtApprove2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtApprove2.Location = new System.Drawing.Point(178, 582);
+            this.txtApprove2.Location = new System.Drawing.Point(178, 607);
             this.txtApprove2.MaxLength = 12;
             this.txtApprove2.Name = "txtApprove2";
             this.txtApprove2.Size = new System.Drawing.Size(102, 25);
@@ -321,7 +296,7 @@
             // btnSmartSearch
             // 
             this.btnSmartSearch.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnSmartSearch.Location = new System.Drawing.Point(21, 652);
+            this.btnSmartSearch.Location = new System.Drawing.Point(82, 677);
             this.btnSmartSearch.Name = "btnSmartSearch";
             this.btnSmartSearch.Size = new System.Drawing.Size(178, 31);
             this.btnSmartSearch.TabIndex = 45;
@@ -341,7 +316,7 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 689);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 713);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(632, 22);
             this.statusStrip1.SizingGrip = false;
@@ -349,24 +324,62 @@
             this.statusStrip1.TabIndex = 46;
             this.statusStrip1.Text = "statusStrip1";
             // 
+            // toolStripStatusLabel2
+            // 
+            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(380, 17);
+            this.toolStripStatusLabel2.Spring = true;
+            // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(237, 17);
             this.toolStripStatusLabel1.Text = "Mon-Wei Hsiao Copyright ©  2017-2018";
             // 
-            // toolStripStatusLabel2
+            // chkMail
             // 
-            this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(349, 17);
-            this.toolStripStatusLabel2.Spring = true;
+            this.chkMail.AutoSize = true;
+            this.chkMail.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.chkMail.Location = new System.Drawing.Point(478, 682);
+            this.chkMail.Name = "chkMail";
+            this.chkMail.Size = new System.Drawing.Size(92, 21);
+            this.chkMail.TabIndex = 47;
+            this.chkMail.Text = "以Mail寄出";
+            this.chkMail.UseVisualStyleBackColor = true;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuManual,
+            this.mnuAbout});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(632, 24);
+            this.menuStrip1.TabIndex = 48;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // mnuManual
+            // 
+            this.mnuManual.Name = "mnuManual";
+            this.mnuManual.Size = new System.Drawing.Size(63, 20);
+            this.mnuManual.Text = "說明(&M)";
+            this.mnuManual.Click += new System.EventHandler(this.mnuManual_Click);
+            // 
+            // mnuAbout
+            // 
+            this.mnuAbout.Name = "mnuAbout";
+            this.mnuAbout.Size = new System.Drawing.Size(59, 20);
+            this.mnuAbout.Text = "關於(&A)";
+            this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
             // frmTDSCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(632, 711);
+            this.ClientSize = new System.Drawing.Size(632, 735);
+            this.Controls.Add(this.chkMail);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.btnSmartSearch);
             this.Controls.Add(this.txtApprove2);
             this.Controls.Add(this.txtQA2);
@@ -378,7 +391,6 @@
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtApprove1);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.btnStart_Mail);
             this.Controls.Add(this.dtpDate);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtTDSName);
@@ -388,16 +400,17 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStart);
-            this.Controls.Add(this.pnlFiles);
             this.Controls.Add(this.lblStatus);
+            this.Controls.Add(this.pnlFiles);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "frmTDSCreator";
             this.Text = "技術文件產生器";
-            this.pnlFiles.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -415,7 +428,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DateTimePicker dtpDate;
-        private System.Windows.Forms.Button btnStart_Mail;
         private System.Windows.Forms.Label lblStatus;
         private System.ComponentModel.BackgroundWorker bgdWork;
         private System.Windows.Forms.TextBox txtApprove1;
@@ -430,10 +442,13 @@
         private System.Windows.Forms.TextBox txtApprove2;
         private System.Windows.Forms.Button btnSmartSearch;
         private System.ComponentModel.BackgroundWorker bgdSmartSearch;
-        private System.Windows.Forms.Label lblBusy;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.CheckBox chkMail;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem mnuManual;
+        private System.Windows.Forms.ToolStripMenuItem mnuAbout;
     }
 }
 
