@@ -117,8 +117,6 @@ namespace TDSCreator
                 pnlFiles.Controls.Add(btnAddFile[i]);
             }
             pnlFiles.Visible = true;
-            ToolTip tt = new ToolTip();
-            tt.SetToolTip(chkMail, "將使用本機Outlook帳戶寄送郵件，若需要權限請點選[允許]");
         }
 
         private void lstFileName_DoubleClick(object sender, EventArgs e)
@@ -239,6 +237,7 @@ namespace TDSCreator
                     outputType = 1;
                     fileName = frmMailer.FileName;
                     address = frmMailer.MailAddress;
+                    MessageBox.Show("將使用本機Outlook帳戶寄送郵件，若需要權限請點選[允許]", "Alert");
                 }
                 else
                     return;
@@ -531,7 +530,7 @@ namespace TDSCreator
                             mailItem.Subject = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                             mailItem.To = address;
                             mailItem.BodyFormat = Microsoft.Office.Interop.Outlook.OlBodyFormat.olFormatHTML;
-                            mailItem.Body = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                            mailItem.Body = "Sent at " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                             mailItem.Attachments.Add(tempDoc);
                             mailItem.Send();
                         }
