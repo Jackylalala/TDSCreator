@@ -23,7 +23,7 @@ namespace TDSCreator
         private static BaseFont fontMsjhBd;
         private static BaseFont fontCalibri;
         private static BaseFont fontCalibriBd;
-        private static string TdsName="";
+        private static string tdsName="";
         private static int version = 0;
         private static string approver = "";
         private static string QAer = "";
@@ -40,6 +40,7 @@ namespace TDSCreator
         private static bool validFile;
         private List<TdsItem> dragDropFiles = new List<TdsItem>();
         private static string[] allowedFileExt = new string[] { ".pdf", ".docx", ".doc", ".xls", ".xlsx", "ppt", "pptx" };
+        private object syncLocker = new object();
         #endregion
 
         #region | Events |
@@ -223,27 +224,28 @@ namespace TDSCreator
             QAer = txtQA1.Text + (txtQA2.Text.Equals("") ? "" : "\v" + txtQA2.Text);
             reviewer = txtReview1.Text + (txtReview2.Text.Equals("") ? "" : "\v" + txtReview2.Text) + (txtReview3.Text.Equals("") ? "" : "\v" + txtReview3.Text.Replace("\r\n", "\v"));
             author = txtAuthor.Text.Replace("\r\n", "\v");
-            TdsName = txtTDSName.Text;
+            tdsName = txtTDSName.Text;
             int.TryParse(txtVersion.Text, out version);
             date = dtpDate.Value;
-            string fileName = TdsName + "技術文件_v" + version.ToString();
+            string fileName = tdsName + "技術文件_v" + version.ToString();
             string address = "";
             int outputType;
             if (chkMail.Checked) //via mail
             {
+                MessageBox.Show("將使用本機Outlook帳戶寄送郵件，若需要權限請點選[允許]", "Alert");
                 frmMailer frmMailer = new frmMailer(fileName);
                 if (frmMailer.ShowDialog() == DialogResult.OK)
                 {
                     outputType = 1;
                     fileName = frmMailer.FileName;
                     address = frmMailer.MailAddress;
-                    MessageBox.Show("將使用本機Outlook帳戶寄送郵件，若需要權限請點選[允許]", "Alert");
                 }
                 else
                     return;
             }
             else
             {
+                /*
                 if (ModifierKeys == Keys.Alt) //to ftp
                 {
                     outputType = 2;
@@ -253,20 +255,20 @@ namespace TDSCreator
                     if (InputBox("Save to FTP", "File name:", ref fileName) != DialogResult.OK)
                         return;
                 }
-                else //to file
+                else 
+                */
+                //to file
+                SaveFileDialog sfd = new SaveFileDialog();
+                sfd.Title = "儲存為檔案";
+                sfd.Filter = "PDF file(*.pdf)|*.pdf";
+                sfd.FileName = fileName;
+                if (sfd.ShowDialog() == DialogResult.OK)
                 {
-                    SaveFileDialog sfd = new SaveFileDialog();
-                    sfd.Title = "儲存為檔案";
-                    sfd.Filter = "PDF file(*.pdf)|*.pdf";
-                    sfd.FileName = fileName;
-                    if (sfd.ShowDialog() == DialogResult.OK)
-                    {
-                        outputType = 0;
-                        fileName = sfd.FileName;
-                    }
-                    else
-                        return;
+                    outputType = 0;
+                    fileName = sfd.FileName;
                 }
+                else
+                    return;
             }
             //sort
             tdsFile.Sort();
@@ -282,16 +284,16 @@ namespace TDSCreator
             string address = (e.Argument as object[])[1].ToString(); ;
             int outputType = int.Parse((e.Argument as object[])[2].ToString());
             int retry = 0;
-            Retry:
+            bgdWork.ReportProgress(99, "正在轉換檔案為PDF...");
             try
             {
                 //convert files
-                for (int i = 0; i < tdsFile.Count; i++)
+                Parallel.For(0, tdsFile.Count, i =>
                 {
-                    bgdWork.ReportProgress(99, "正在處理檔案[" + TDS_ITEM_LIST[tdsFile[i].TdsIndex] + "]...");
                     MemoryStream ms = new MemoryStream();
                     if (File.Exists(tdsFile[i].FileName))
                     {
+                        Retry:
                         try
                         {
                             //variable for office
@@ -370,7 +372,7 @@ namespace TDSCreator
                         }
                         catch (Exception ex)
                         {
-                            if (retry<1)
+                            if (retry < 1)
                             {
                                 retry++;
                                 bgdWork.ReportProgress(99, "Getting some trouble, retry...");
@@ -382,15 +384,13 @@ namespace TDSCreator
                         {
                             GC.Collect();
                             GC.WaitForPendingFinalizers();
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
                         }
                     }
                     if (ms.Length > 0)
                         tdsFile[i].Data = ms;
                     else
                         tdsFile.RemoveAt(i);
-                }
+                });
                 //create streams
                 bgdWork.ReportProgress(99, "正在合併檔案...");
                 MemoryStream msContent = MergeSinglePdfs(tdsFile);
@@ -399,6 +399,7 @@ namespace TDSCreator
                 List<MemoryStream> streams = new List<MemoryStream>();
                 streams.Add(msTOC);
                 streams.Add(msContent);
+                //merge TOC and content
                 MemoryStream finalStream = new MemoryStream();
                 using (Document doc = new Document())
                 {
@@ -438,7 +439,7 @@ namespace TDSCreator
                                     {
                                         //add header
                                         Image logo = Image.GetInstance(
-                                            new System.Drawing.Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.logo.jpg")),
+                                            new System.Drawing.Bitmap(Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.logo.png")),
                                             System.Drawing.Imaging.ImageFormat.Jpeg);
                                         logo.ScaleAbsoluteWidth(width * 0.3024f);
                                         logo.ScaleAbsoluteHeight(height * 0.0343f);
@@ -446,8 +447,22 @@ namespace TDSCreator
                                         logo.Alignment = Element.ALIGN_LEFT;
                                         PdfContentByte cb = stamper.GetOverContent();
                                         cb.AddImage(logo);
-                                        Paragraph p = new Paragraph();
+                                        //set watermark
+                                        PdfGState gstate = new PdfGState()
+                                        {
+                                            FillOpacity = 0.2f,
+                                            StrokeOpacity = 0.2f
+                                        };
+                                        PdfContentByte cbUnder = stamper.GetUnderContent();
+                                        cbUnder.SetGState(gstate);
+                                        logo.ScalePercent((width / 2) / logo.Width * 100);
+                                        logo.RotationDegrees = 45;
+                                        logo.SetAbsolutePosition((width - logo.ScaledWidth) / 2, (height - logo.ScaledHeight) / 2);
+                                        logo.Alignment = Element.ALIGN_CENTER;
+
+                                        cbUnder.AddImage(logo);
                                         /*
+                                        Paragraph p = new Paragraph();
                                         p.Add(new Phrase("文件編號：", new Font(fontMsjh, 8)));
                                         p.Add(new Phrase("76-PC-08-01", new Font(fontCalibri, 8)));
                                         ColumnText.ShowTextAligned(
@@ -513,7 +528,7 @@ namespace TDSCreator
                         MessageBox.Show("儲存檔案成功。\n若此程式於沙盒模式(程式周圍有綠色方框)執行，離開程式將會無法看見此檔案，請使用Acrobat Reader中的傳送功能以電子郵件寄出", "Alert");
                         break;
                     case 1: //send mail
-                        bgdWork.ReportProgress(99, "Sending mail...");
+                        bgdWork.ReportProgress(99, "以Outlook寄送郵件中，稍後請點選[允許]按鈕");
                         try
                         {
                             //create temp file
@@ -525,22 +540,35 @@ namespace TDSCreator
                                 fs.Write(bytes, 0, bytes.Length);
                             }
                             //send via outlook
-                            Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
-                            Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+                            Microsoft.Office.Interop.Outlook.Application outlook = new Microsoft.Office.Interop.Outlook.Application();
+                            Microsoft.Office.Interop.Outlook.MailItem mailItem = outlook.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
                             mailItem.Subject = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                             mailItem.To = address;
                             mailItem.BodyFormat = Microsoft.Office.Interop.Outlook.OlBodyFormat.olFormatHTML;
                             mailItem.Body = "Sent at " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
                             mailItem.Attachments.Add(tempDoc);
                             mailItem.Send();
+                            Marshal.FinalReleaseComObject(outlook);
+                            //try to del temp file
+                            try
+                            {
+                                File.Delete(tempDoc);
+                            }
+                            catch (Exception) { }
+                            MessageBox.Show("成功寄出檔案到" + address);
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message, "Alert");
                         }
+                        finally
+                        {
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
+                        }
                         break;
                     case 2: //uplod ftp
-                        bgdWork.ReportProgress(99, "Saving file...");
+                        bgdWork.ReportProgress(99, "上傳檔案中...");
                         using (WebClient wc = new WebClient())
                         {
                             wc.Credentials = new NetworkCredential();
@@ -577,59 +605,56 @@ namespace TDSCreator
                 {
                     lblStatus.Text = "正在智能搜尋附件...";
                     FunctionSwitch(false);
-                    bgdSmartSearch.RunWorkerAsync(new object[] { txtTDSName.Text, fbd.SelectedPath });
+                    tdsName = txtTDSName.Text;
+                    bgdSmartSearch.RunWorkerAsync(new object[] { fbd.SelectedPath });
                 }
             }
         }
 
         private void bgdSmartSearch_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            string TDSName = (e.Argument as object[])[0].ToString();
-            string rootFolder = (e.Argument as object[])[1].ToString();
+            string rootFolder = (e.Argument as object[])[0].ToString();
             List<TdsItem> result = new List<TdsItem>();
-            string[] subFolder = Directory.GetDirectories(rootFolder);
             try
             {
-                for (int i = 0; i < TDS_ITEM_LIST.Length; i++)
+                //search file with specific name
+                string[] fileList = Directory
+                .EnumerateFiles(rootFolder,"*",SearchOption.AllDirectories)
+                .AsParallel()
+                .Where(x => !new FileInfo(x).Attributes.HasFlag(FileAttributes.Hidden) && !x.StartsWith("~$"))
+                .ToArray();
+                Parallel.For(0, fileList.Length, i =>
                 {
-                    foreach (string folder in subFolder)
-                    {
-                        if (folder.Contains(TDS_ITEM_LIST[i]))
-                        {
-                            Parallel.ForEach(Directory.GetFiles(folder, "*.*", SearchOption.AllDirectories), file =>
-                            {
-                                if (file.Contains(TDSName))
-                                {
-                                    TdsItem temp = new TdsItem(i, file);
-                                    if (!tdsFile.Any(temp.Equals))
-                                        result.Add(temp);
-                                }
-                            });
-                            break;
-                        }
-                    }
-                }
+                     Parallel.For(0, TDS_ITEM_LIST.Length, j =>
+                       {
+                           if(fileList[i].Contains(TDS_ITEM_LIST[j]) && fileList[i].Contains(tdsName))
+                           {
+                               lock(syncLocker)
+                               {
+                                   TdsItem temp = new TdsItem(j, fileList[i]);
+                                   if (!tdsFile.Any(temp.Equals) && !result.Any(temp.Equals))
+                                       result.Add(temp);
+                               }
+                           }
+                       });
+                 });
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Alert");
             }
-            bgdSmartSearch.ReportProgress(99, result);
+            e.Result = result;
         }
 
-        private void bgdSmartSearch_ProgressChanged(object sender, System.ComponentModel.ProgressChangedEventArgs e)
+        private void bgdSmartSearch_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
         {
-            List<TdsItem> result = (List<TdsItem>)e.UserState;
+            List<TdsItem> result = (List<TdsItem>)e.Result;
             foreach (TdsItem item in result)
             {
                 tdsFile.Add(item);
                 lstFileName[item.TdsIndex].Items.Add(item);
                 lblCount[item.TdsIndex].Text = lstFileName[item.TdsIndex].Items.Count.ToString();
             }
-        }
-
-        private void bgdSmartSearch_RunWorkerCompleted(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
-        {
             FunctionSwitch(true);
             MessageBox.Show("智能搜尋完成！", "Alert");
         }
@@ -752,7 +777,7 @@ namespace TDSCreator
                 Microsoft.Office.Interop.Word.Document doc = word.Documents.Open(tempDoc);
                 doc.Activate();
                 FindAndReplace(word, "(ver)", "V" + version.ToString());
-                FindAndReplace(word, "(tdsName)", TdsName);
+                FindAndReplace(word, "(tdsName)", tdsName);
                 FindAndReplace(word, "(approve)", approver);
                 FindAndReplace(word, "(QA)", QAer);
                 FindAndReplace(word, "(review)", reviewer);

@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Text;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace TDSCreator
 {
@@ -36,21 +37,11 @@ namespace TDSCreator
             //read mail list
             try
             {
-                string mailListFile = Application.StartupPath + @"\mailList.txt";
                 string mailList = string.Empty;
-                if (File.Exists(mailListFile))
-                {
-                    using (FileStream fs = new FileStream(mailListFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    {
-                        using (StreamReader sr = new StreamReader(fs, Encoding.UTF8))
-                            mailList = sr.ReadToEnd();
-                    }
-                }
+                using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.mailList.txt"), Encoding.UTF8))
+                    mailList = sr.ReadToEnd();
                 foreach (string item in mailList.Split(';'))
-                {
-                    MailItem tmp = new MailItem(item, item.Substring(item.IndexOf('<') + 1, item.IndexOf('>') - item.IndexOf('<') - 1));
-                    cboMailAddress.Items.Add(tmp);
-                }
+                    cboMailAddress.Items.Add(new MailItem(item, item.Substring(item.IndexOf('<') + 1, item.IndexOf('>') - item.IndexOf('<') - 1)));
             }
             catch (Exception)
             { }
@@ -89,6 +80,38 @@ namespace TDSCreator
             {
                 return false;
             }
+        }
+
+        private void btnReadMailAddress_Click(object sender, EventArgs e)
+        {
+            Enabled = false;
+            cboMailAddress.Items.Clear();
+            MessageBox.Show("將嘗試讀取Outlook中通訊錄，需要一段時間", "Alert");
+            Microsoft.Office.Interop.Outlook.Application outlook = new Microsoft.Office.Interop.Outlook.Application();
+            Microsoft.Office.Interop.Outlook.AddressList addressList = outlook.Session.GetGlobalAddressList();
+            for (int i = 1; i <= addressList.AddressEntries.Count - 1; i++)
+            {
+                Microsoft.Office.Interop.Outlook.AddressEntry addrEntry = addressList.AddressEntries[i];
+                if (addrEntry.AddressEntryUserType == Microsoft.Office.Interop.Outlook.OlAddressEntryUserType.olExchangeUserAddressEntry)
+                {
+                    Microsoft.Office.Interop.Outlook.ExchangeUser exchUser = addrEntry.GetExchangeUser();
+                    cboMailAddress.Items.Add(new MailItem(exchUser.Name + " <" + exchUser.PrimarySmtpAddress + ">", exchUser.PrimarySmtpAddress));
+                }
+            }
+            if (cboMailAddress.Items.Count > 0)
+            {
+                cboMailAddress.SelectedIndex = 0;
+                txtMailAddress.Visible = false;
+                cboMailAddress.Visible = true;
+                MessageBox.Show("讀取成功", "Alert");
+            }
+            else
+            {
+                txtMailAddress.Visible = true;
+                cboMailAddress.Visible = false;
+                MessageBox.Show("讀取失敗，請手動輸入郵件地址", "Alert");
+            }
+            Enabled = true;
         }
     }
 }

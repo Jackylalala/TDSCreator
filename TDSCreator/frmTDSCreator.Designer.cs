@@ -306,9 +306,7 @@
             // 
             // bgdSmartSearch
             // 
-            this.bgdSmartSearch.WorkerReportsProgress = true;
             this.bgdSmartSearch.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgdSmartSearch_DoWork);
-            this.bgdSmartSearch.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.bgdSmartSearch_ProgressChanged);
             this.bgdSmartSearch.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgdSmartSearch_RunWorkerCompleted);
             // 
             // statusStrip1
@@ -339,6 +337,8 @@
             // chkMail
             // 
             this.chkMail.AutoSize = true;
+            this.chkMail.Checked = true;
+            this.chkMail.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkMail.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.chkMail.Location = new System.Drawing.Point(478, 682);
             this.chkMail.Name = "chkMail";
