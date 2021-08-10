@@ -222,67 +222,32 @@ namespace TDSCreator
             //version, author, TDSName, date
             approver = txtApprove1.Text + (txtApprove2.Text.Equals("") ? "" : "\v" + txtApprove2.Text);
             QAer = txtQA1.Text + (txtQA2.Text.Equals("") ? "" : "\v" + txtQA2.Text);
-            reviewer = txtReview1.Text + (txtReview2.Text.Equals("") ? "" : "\v" + txtReview2.Text) + (txtReview3.Text.Equals("") ? "" : "\v" + txtReview3.Text.Replace("\r\n", "\v"));
+            reviewer = txtReview1.Text + (txtReview2.Text.Equals("") ? "" : "\v" + txtReview2.Text) + (txtReview3.Text.Equals("") ? "" : "\v" + txtReview3.Text) + (txtReview4.Text.Equals("") ? "" : "\v" + txtReview4.Text);
             author = txtAuthor.Text.Replace("\r\n", "\v");
             tdsName = txtTDSName.Text;
             int.TryParse(txtVersion.Text, out version);
             date = dtpDate.Value;
             string fileName = tdsName + "技術文件_v" + version.ToString();
-            string address = "";
-            int outputType;
-            if (chkMail.Checked) //via mail
-            {
-                MessageBox.Show("將使用本機Outlook帳戶寄送郵件，若需要權限請點選[允許]", "Alert");
-                frmMailer frmMailer = new frmMailer(fileName);
-                if (frmMailer.ShowDialog() == DialogResult.OK)
-                {
-                    outputType = 1;
-                    fileName = frmMailer.FileName;
-                    address = frmMailer.MailAddress;
-                }
-                else
-                    return;
-            }
+            //set filename
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Title = "儲存為檔案";
+            sfd.Filter = "PDF file(*.pdf)|*.pdf";
+            sfd.FileName = fileName;
+            if (sfd.ShowDialog() == DialogResult.OK)
+                fileName = sfd.FileName;
             else
-            {
-                /*
-                if (ModifierKeys == Keys.Alt) //to ftp
-                {
-                    outputType = 2;
-                    address = @"ftp://jackylalala.ddns.net";
-                    if (InputBox("Save to FTP", "FTP address:", ref address) != DialogResult.OK)
-                        return;
-                    if (InputBox("Save to FTP", "File name:", ref fileName) != DialogResult.OK)
-                        return;
-                }
-                else 
-                */
-                //to file
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Title = "儲存為檔案";
-                sfd.Filter = "PDF file(*.pdf)|*.pdf";
-                sfd.FileName = fileName;
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    outputType = 0;
-                    fileName = sfd.FileName;
-                }
-                else
-                    return;
-            }
+                return;
             //sort
             tdsFile.Sort();
             FunctionSwitch(false);
             lblStatus.Text = "正在產生技術文件...";
-            bgdWork.RunWorkerAsync(new object[] { fileName, address, outputType });
+            bgdWork.RunWorkerAsync(new object[] { fileName });
         }
 
         private void bgdWork_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
             bgdWork.ReportProgress(0, ""); //initiate
             string fileName = (e.Argument as object[])[0].ToString(); ;
-            string address = (e.Argument as object[])[1].ToString(); ;
-            int outputType = int.Parse((e.Argument as object[])[2].ToString());
             int retry = 0;
             bgdWork.ReportProgress(99, "正在轉換檔案為PDF...");
             try
@@ -310,7 +275,7 @@ namespace TDSCreator
                                     Microsoft.Office.Interop.Word.Document doc = word.Documents.Open(ref srcFile);
                                     //save to pdf
                                     object fileFormat = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatPDF;
-                                    doc.SaveAs2(ref dstFile, ref fileFormat);
+                                    doc.SaveAs(ref dstFile, ref fileFormat);
                                     //close file
                                     object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
                                     doc.Close(ref saveChanges);
@@ -384,6 +349,8 @@ namespace TDSCreator
                         {
                             GC.Collect();
                             GC.WaitForPendingFinalizers();
+                            GC.Collect();
+                            GC.WaitForPendingFinalizers();
                         }
                     }
                     if (ms.Length > 0)
@@ -405,31 +372,38 @@ namespace TDSCreator
                 {
                     using (PdfCopy writer = new PdfCopy(doc, finalStream))
                     {
+                        //encryption
+                        //writer.SetEncryption(true, null, "TDS created by OUCC R&D deparment", PdfWriter.AllowScreenReaders | PdfWriter.AllowPrinting);
+                        //set infomation
+                        doc.AddTitle(tdsName + "技術文件_v" + version.ToString());
+                        doc.AddAuthor(author);
+                        doc.AddSubject("Technical document of processing");
+                        doc.AddCreator("TDSCreator by Mon-Wei Hsiao");
+                        doc.Open();
                         List<Dictionary<string, object>> outline = new List<Dictionary<string, object>>();
                         int pageCounter = -1;
                         writer.CloseStream = false;
-                        foreach (MemoryStream ms in streams)
+                        for (int i = 0; i < streams.Count; i++)
                         {
-                            doc.Open();
-                            ms.Position = 0; //reset ms position to zero
+                            streams[i].Position = 0; //reset ms position to zero
                             IList<Dictionary<string, object>> tempBookmarks;
                             //merge pdf and add header/footer
-                            using (PdfReader reader = new PdfReader(ms))
+                            using (PdfReader reader = new PdfReader(streams[i]))
                             {
                                 //handle exist bookmarks
                                 tempBookmarks = SimpleBookmark.GetBookmark(reader);
                                 SimpleBookmark.ShiftPageNumbers(tempBookmarks, pageCounter + 1, null);
                                 if (tempBookmarks != null)
                                     outline.AddRange(tempBookmarks);
-                                for (int i = 1; i <= reader.NumberOfPages; i++)
+                                for (int j = 1; j <= reader.NumberOfPages; j++)
                                 {
                                     bgdWork.ReportProgress(99, "添加頁面" + pageCounter);
-                                    PdfImportedPage page = writer.GetImportedPage(reader, i);
+                                    PdfImportedPage page = writer.GetImportedPage(reader, j);
                                     PdfCopy.PageStamp stamper = writer.CreatePageStamp(page);
-                                    float width = reader.GetPageSize(i).Width;
-                                    float height = reader.GetPageSize(i).Height;
+                                    float width = reader.GetPageSize(j).Width;
+                                    float height = reader.GetPageSize(j).Height;
                                     //detect rotation
-                                    if (reader.GetPageRotation(i) == 90 || reader.GetPageRotation(i) == 270)
+                                    if (reader.GetPageRotation(j) == 90 || reader.GetPageRotation(j) == 270)
                                     {
                                         float temp = width;
                                         width = height;
@@ -450,8 +424,8 @@ namespace TDSCreator
                                         //set watermark
                                         PdfGState gstate = new PdfGState()
                                         {
-                                            FillOpacity = 0.2f,
-                                            StrokeOpacity = 0.2f
+                                            FillOpacity = 0.3f,
+                                            StrokeOpacity = 0.3f
                                         };
                                         PdfContentByte cbUnder = stamper.GetUnderContent();
                                         cbUnder.SetGState(gstate);
@@ -509,13 +483,24 @@ namespace TDSCreator
                                     writer.AddDocument(reader);
                                 reader.Close();
                             }
-                            ms.Dispose();
+                            streams[i].Dispose();
                         }
+                        //set bookmarks
                         writer.Outlines = outline;
                         doc.Close();
                     }
                 }
-                switch(outputType)
+                //output
+                using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
+                {
+                    byte[] bytes; //byte array for combined stream
+                    bytes = finalStream.ToArray();
+                    fs.Write(bytes, 0, bytes.Length);
+                }
+                Process.Start(fileName);
+                //MessageBox.Show("儲存檔案成功。\n若此程式於沙盒模式(程式周圍有綠色方框)執行，離開程式將會無法看見此檔案，請使用Acrobat Reader中的傳送功能以電子郵件寄出", "Alert");
+                /*
+                switch (outputType)
                 {
                     case 0: //write to file
                         using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.ReadWrite))
@@ -528,54 +513,32 @@ namespace TDSCreator
                         MessageBox.Show("儲存檔案成功。\n若此程式於沙盒模式(程式周圍有綠色方框)執行，離開程式將會無法看見此檔案，請使用Acrobat Reader中的傳送功能以電子郵件寄出", "Alert");
                         break;
                     case 1: //send mail
-                        bgdWork.ReportProgress(99, "以Outlook寄送郵件中，稍後請點選[允許]按鈕");
-                        try
+                        //create temp file
+                        string tempDoc = Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
+                        using (FileStream fs = new FileStream(tempDoc, FileMode.Create, FileAccess.ReadWrite))
                         {
-                            //create temp file
-                            string tempDoc = Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-                            using (FileStream fs = new FileStream(tempDoc, FileMode.Create, FileAccess.ReadWrite))
-                            {
-                                byte[] bytes; //byte array for combined stream
-                                bytes = finalStream.ToArray();
-                                fs.Write(bytes, 0, bytes.Length);
-                            }
-                            //send via outlook
-                            Microsoft.Office.Interop.Outlook.Application outlook = new Microsoft.Office.Interop.Outlook.Application();
-                            Microsoft.Office.Interop.Outlook.MailItem mailItem = outlook.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
-                            mailItem.Subject = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                            mailItem.To = address;
-                            mailItem.BodyFormat = Microsoft.Office.Interop.Outlook.OlBodyFormat.olFormatHTML;
-                            mailItem.Body = "Sent at " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
-                            mailItem.Attachments.Add(tempDoc);
-                            mailItem.Send();
-                            Marshal.FinalReleaseComObject(outlook);
-                            //try to del temp file
-                            try
-                            {
-                                File.Delete(tempDoc);
-                            }
-                            catch (Exception) { }
-                            MessageBox.Show("成功寄出檔案到" + address);
+                            byte[] bytes; //byte array for combined stream
+                            bytes = finalStream.ToArray();
+                            fs.Write(bytes, 0, bytes.Length);
                         }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show(ex.Message, "Alert");
-                        }
-                        finally
-                        {
-                            GC.Collect();
-                            GC.WaitForPendingFinalizers();
-                        }
-                        break;
-                    case 2: //uplod ftp
-                        bgdWork.ReportProgress(99, "上傳檔案中...");
-                        using (WebClient wc = new WebClient())
-                        {
-                            wc.Credentials = new NetworkCredential();
-                            wc.UploadData(address + "/" + fileName + ".pdf", finalStream.ToArray());
-                        }
+                        //send via outlook
+                        Microsoft.Office.Interop.Outlook.Application outlook = new Microsoft.Office.Interop.Outlook.Application();
+                        Microsoft.Office.Interop.Outlook.MailItem mailItem = outlook.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+                        mailItem.Subject = fileName + " - " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                        mailItem.BodyFormat = Microsoft.Office.Interop.Outlook.OlBodyFormat.olFormatHTML;
+                        mailItem.Body = fileName + Environment.NewLine + "Sent at " + DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+                        mailItem.Attachments.Add(tempDoc);
+                        mailItem.Display();
+                        Marshal.FinalReleaseComObject(outlook);
+                        //del temp file
+                        File.Delete(tempDoc);
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
+                        GC.Collect();
+                        GC.WaitForPendingFinalizers();
                         break;
                 }
+                */
             }
             catch (Exception ex)
             {
@@ -600,13 +563,13 @@ namespace TDSCreator
                 MessageBox.Show("請輸入產品名稱", "Alert");
             else
             {
-                FolderBrowserDialog fbd = new FolderBrowserDialog();
-                if (fbd.ShowDialog() == DialogResult.OK)
+                CustomFileBrowserDialog fbd = new CustomFileBrowserDialog();
+                if (fbd.ShowDialog(this) == DialogResult.OK)
                 {
-                    lblStatus.Text = "正在智能搜尋附件...";
+                    lblStatus.Text = "正在自動搜尋附件...";
                     FunctionSwitch(false);
                     tdsName = txtTDSName.Text;
-                    bgdSmartSearch.RunWorkerAsync(new object[] { fbd.SelectedPath });
+                    bgdSmartSearch.RunWorkerAsync(new object[] { fbd.DirectoryPath });
                 }
             }
         }
@@ -656,7 +619,7 @@ namespace TDSCreator
                 lblCount[item.TdsIndex].Text = lstFileName[item.TdsIndex].Items.Count.ToString();
             }
             FunctionSwitch(true);
-            MessageBox.Show("智能搜尋完成！", "Alert");
+            MessageBox.Show("自動搜尋完成！", "Alert");
         }
 
         private void mnuAbout_Click(object sender, EventArgs e)
@@ -665,11 +628,6 @@ namespace TDSCreator
             aboutBox.ShowDialog();
         }
 
-        private void mnuManual_Click(object sender, EventArgs e)
-        {
-            using (StreamReader sr = new StreamReader(Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.help.txt"), Encoding.UTF8))
-                FlexibleMessageBox.Show(sr.ReadToEnd(), "使用說明");
-        }
         #endregion
 
         #region | Methods |
@@ -699,6 +657,7 @@ namespace TDSCreator
                     foreach (TdsItem item in tdsFile)
                     {
                         PdfReader reader;
+                        PdfReader.unethicalreading = true;
                         //add doc and create bookmark
                         if (!processedIndex.Contains(item.TdsIndex))
                         {
@@ -760,18 +719,23 @@ namespace TDSCreator
         public static MemoryStream CreateTOC()
         {
             MemoryStream ms = new MemoryStream();
-            string tempDoc = Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
-            string tempPdf = Path.GetTempPath() + Guid.NewGuid().ToString() + ".docx";
+            string tempDoc = Path.GetTempPath() + Guid.NewGuid().ToString() + ".docx";
+            string tempPdf = Path.GetTempPath() + Guid.NewGuid().ToString() + ".pdf";
             //get template
             try
             {
-                using (MemoryStream ms2 = new MemoryStream())
+                if (File.Exists(Application.StartupPath + @"\template.docx"))
+                    File.Copy(Application.StartupPath + @"\template.docx", tempDoc, true);
+                else
                 {
-                    Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.template.docx");
-                    s.CopyTo(ms2);
-                    byte[] bytes = ms2.ToArray();
-                    using (FileStream fs = new FileStream(tempDoc, FileMode.Create, FileAccess.ReadWrite))
-                        fs.Write(bytes, 0, bytes.Length);
+                    using (MemoryStream ms2 = new MemoryStream())
+                    {
+                        Stream s = Assembly.GetExecutingAssembly().GetManifestResourceStream("TDSCreator.Resources.template.docx");
+                        s.CopyTo(ms2);
+                        byte[] bytes = ms2.ToArray();
+                        using (FileStream fs = new FileStream(tempDoc, FileMode.Create, FileAccess.ReadWrite))
+                            fs.Write(bytes, 0, bytes.Length);
+                    }
                 }
                 Microsoft.Office.Interop.Word.Application word = new Microsoft.Office.Interop.Word.Application();
                 Microsoft.Office.Interop.Word.Document doc = word.Documents.Open(tempDoc);
@@ -797,7 +761,7 @@ namespace TDSCreator
                 //save to pdf
                 object dstFile = tempPdf;
                 object fileFormat = Microsoft.Office.Interop.Word.WdSaveFormat.wdFormatPDF;
-                doc.SaveAs2(ref dstFile, ref fileFormat);
+                doc.SaveAs(ref dstFile, ref fileFormat);
                 object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
                 doc.Close(ref saveChanges);
                 doc = null;

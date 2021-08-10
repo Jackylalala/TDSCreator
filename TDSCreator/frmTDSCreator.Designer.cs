@@ -56,10 +56,9 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.chkMail = new System.Windows.Forms.CheckBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.mnuManual = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtReview4 = new System.Windows.Forms.TextBox();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -67,7 +66,7 @@
             // btnStart
             // 
             this.btnStart.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnStart.Location = new System.Drawing.Point(293, 677);
+            this.btnStart.Location = new System.Drawing.Point(333, 677);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(178, 31);
             this.btnStart.TabIndex = 43;
@@ -102,7 +101,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.label1.Location = new System.Drawing.Point(397, 646);
+            this.label1.Location = new System.Drawing.Point(466, 647);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(60, 17);
             this.label1.TabIndex = 2;
@@ -132,11 +131,11 @@
             // txtAuthor
             // 
             this.txtAuthor.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtAuthor.Location = new System.Drawing.Point(463, 642);
+            this.txtAuthor.Location = new System.Drawing.Point(532, 643);
             this.txtAuthor.MaxLength = 12;
             this.txtAuthor.Multiline = true;
             this.txtAuthor.Name = "txtAuthor";
-            this.txtAuthor.Size = new System.Drawing.Size(102, 22);
+            this.txtAuthor.Size = new System.Drawing.Size(82, 22);
             this.txtAuthor.TabIndex = 42;
             this.txtAuthor.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -236,7 +235,7 @@
             this.txtReview1.Location = new System.Drawing.Point(70, 642);
             this.txtReview1.MaxLength = 12;
             this.txtReview1.Name = "txtReview1";
-            this.txtReview1.Size = new System.Drawing.Size(102, 25);
+            this.txtReview1.Size = new System.Drawing.Size(80, 25);
             this.txtReview1.TabIndex = 39;
             this.txtReview1.Text = "黃俊豐";
             this.txtReview1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -254,10 +253,10 @@
             // txtReview2
             // 
             this.txtReview2.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview2.Location = new System.Drawing.Point(178, 642);
+            this.txtReview2.Location = new System.Drawing.Point(168, 642);
             this.txtReview2.MaxLength = 12;
             this.txtReview2.Name = "txtReview2";
-            this.txtReview2.Size = new System.Drawing.Size(102, 25);
+            this.txtReview2.Size = new System.Drawing.Size(80, 25);
             this.txtReview2.TabIndex = 40;
             this.txtReview2.Text = "王文祥";
             this.txtReview2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -265,10 +264,10 @@
             // txtReview3
             // 
             this.txtReview3.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.txtReview3.Location = new System.Drawing.Point(286, 642);
+            this.txtReview3.Location = new System.Drawing.Point(266, 642);
             this.txtReview3.MaxLength = 12;
             this.txtReview3.Name = "txtReview3";
-            this.txtReview3.Size = new System.Drawing.Size(102, 25);
+            this.txtReview3.Size = new System.Drawing.Size(80, 25);
             this.txtReview3.TabIndex = 41;
             this.txtReview3.Text = "蕭孟維";
             this.txtReview3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -296,11 +295,11 @@
             // btnSmartSearch
             // 
             this.btnSmartSearch.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.btnSmartSearch.Location = new System.Drawing.Point(82, 677);
+            this.btnSmartSearch.Location = new System.Drawing.Point(122, 677);
             this.btnSmartSearch.Name = "btnSmartSearch";
             this.btnSmartSearch.Size = new System.Drawing.Size(178, 31);
             this.btnSmartSearch.TabIndex = 45;
-            this.btnSmartSearch.Text = "附件智能搜尋";
+            this.btnSmartSearch.Text = "自動搜尋附件";
             this.btnSmartSearch.UseVisualStyleBackColor = true;
             this.btnSmartSearch.Click += new System.EventHandler(this.btnSmartSearch_Click);
             // 
@@ -325,45 +324,24 @@
             // toolStripStatusLabel2
             // 
             this.toolStripStatusLabel2.Name = "toolStripStatusLabel2";
-            this.toolStripStatusLabel2.Size = new System.Drawing.Size(380, 17);
+            this.toolStripStatusLabel2.Size = new System.Drawing.Size(349, 17);
             this.toolStripStatusLabel2.Spring = true;
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(237, 17);
-            this.toolStripStatusLabel1.Text = "Mon-Wei Hsiao Copyright ©  2017-2018";
-            // 
-            // chkMail
-            // 
-            this.chkMail.AutoSize = true;
-            this.chkMail.Checked = true;
-            this.chkMail.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkMail.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            this.chkMail.Location = new System.Drawing.Point(478, 682);
-            this.chkMail.Name = "chkMail";
-            this.chkMail.Size = new System.Drawing.Size(92, 21);
-            this.chkMail.TabIndex = 47;
-            this.chkMail.Text = "以Mail寄出";
-            this.chkMail.UseVisualStyleBackColor = true;
+            this.toolStripStatusLabel1.Text = "Mon-Wei Hsiao Copyright ©  2017-2020";
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuManual,
             this.mnuAbout});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(632, 24);
             this.menuStrip1.TabIndex = 48;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // mnuManual
-            // 
-            this.mnuManual.Name = "mnuManual";
-            this.mnuManual.Size = new System.Drawing.Size(63, 20);
-            this.mnuManual.Text = "說明(&M)";
-            this.mnuManual.Click += new System.EventHandler(this.mnuManual_Click);
             // 
             // mnuAbout
             // 
@@ -372,12 +350,22 @@
             this.mnuAbout.Text = "關於(&A)";
             this.mnuAbout.Click += new System.EventHandler(this.mnuAbout_Click);
             // 
+            // txtReview4
+            // 
+            this.txtReview4.Font = new System.Drawing.Font("Microsoft JhengHei", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            this.txtReview4.Location = new System.Drawing.Point(364, 642);
+            this.txtReview4.MaxLength = 12;
+            this.txtReview4.Name = "txtReview4";
+            this.txtReview4.Size = new System.Drawing.Size(80, 25);
+            this.txtReview4.TabIndex = 49;
+            this.txtReview4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // frmTDSCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(632, 735);
-            this.Controls.Add(this.chkMail);
+            this.Controls.Add(this.txtReview4);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.btnSmartSearch);
@@ -445,10 +433,9 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.CheckBox chkMail;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem mnuManual;
         private System.Windows.Forms.ToolStripMenuItem mnuAbout;
+        private System.Windows.Forms.TextBox txtReview4;
     }
 }
 
